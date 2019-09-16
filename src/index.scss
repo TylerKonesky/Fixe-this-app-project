@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+}
+
+.app {
+  display: flex;
+
+  .left-student-list {
+    height: 100%;
+    width: 30%;
+    padding: 30px;
+    padding-right: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .separator-skew {
+    height: 100vh;
+    border-right: 1px solid black;
+    transform: skew(10deg);
+  }
+
+  .teams-wrapper {
+  }
+
+  .student-draggable {
+    border: 1px solid black;
+    margin: 10px;
+  }
+}
