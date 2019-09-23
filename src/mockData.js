@@ -14,6 +14,6 @@ export default [
   new Student(5, "Marley", 1),
   new Student(6, "Moira", 3),
   new Student(7, "Ellery", 3),
-  new Student(8, "Ash", null),
-  new Student(9, "Mitch", null)
+  new Student(8, "Ash", 0),
+  new Student(9, "Mitch", 0)
 ]
