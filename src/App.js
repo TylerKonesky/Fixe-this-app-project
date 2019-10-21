@@ -9,14 +9,16 @@ import TeamList from "./components/TeamList"
 const App = () => {
   const [student, setStudent] = React.useState("")
   const [students, setStudents] = React.useState(mockData)
+  const [numberOfTeams, setNumberOfTeams] = React.useState("" || 3)
 
   const renderStudents = () => {
-    const noTeam = students.filter(student => student.team === 0)
+    console.log(students)
+    const noTeam = students.filter(student => student.team === 0) 
     return noTeam.map((student, index) => {
       return (
         <StudentDraggable key={student.id} student={student} index={index} />
       )
-    })
+    }) 
   }
 
   const handleSubmit = e => {
@@ -27,6 +29,49 @@ const App = () => {
     ])
   }
 
+  const resetTeams = () => {
+    return students.map(student => {
+      console.log(student.team)
+      student.team = 0
+      setStudents([...students])
+    })
+  }
+  
+  const shuffleStudents = (arr) =>{
+    let currentIndex = arr.length, temporaryValue, randomIndex;
+    while( 0 !== currentIndex){
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1
+
+      temporaryValue = arr[currentIndex]
+      arr[currentIndex] = arr[randomIndex]
+      arr[randomIndex] = temporaryValue
+    }
+    return arr
+  }
+
+  const randomTeams = () =>{
+    console.log(students)
+    shuffleStudents(students);
+    let studentsPerTeam = Math.ceil
+    let counter = 1
+    return students.map(student =>{ 
+      student.team = counter
+      if(counter == numberOfTeams){
+        counter = 1
+      }else{
+        counter += 1
+      }
+      }
+    )
+  }
+  
+  const newTeams = () =>{
+    randomTeams();
+    setStudents([...students])
+  }
+  
+ 
   const onDragEnd = result => {
     if (!result.destination) {
       return
@@ -36,6 +81,33 @@ const App = () => {
       student => student.id === result.draggableId
     )
     droppedStudent.team = +result.destination.droppableId
+  }
+
+  const createTeams = () => {
+    if(numberOfTeams){
+      let total = new Array(numberOfTeams).fill("1")
+    let counter = 0
+    
+    return total.map(()=>{
+      counter++
+      return(
+        <TeamList students={students} number={`${counter}`} />
+      )
+    })
+
+    }else{
+      return
+    }
+    
+    
+  }
+
+  const handleNumberOfTeams = (event)=>{
+    console.log(numberOfTeams)
+    event.preventDefault()
+    setNumberOfTeams(
+      parseInt(event.target.value)
+    )
   }
 
   return (
@@ -57,20 +129,29 @@ const App = () => {
                   onChange={e => setStudent(e.target.value)}
                 />
                 <button>Add Student</button>
+                
               </form>
+
+              <form>
+                Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input>
+              </form>
+              
+              
+              <button onClick={()=>{resetTeams()}}>Reset</button>
+              <button onClick={()=>{newTeams()}}>Random</button>
               {renderStudents()}
               <div className="separator-skew" />
             </div>
           )}
         </Droppable>
+        
 
         <div className="teams-wrapper">
-          <TeamList students={students} number={"1"} />
-          <TeamList students={students} number={"2"} />
-          <TeamList students={students} number={"3"} />
+          {createTeams()}
         </div>
       </div>
     </DragDropContext>
+    
   )
 }
 
