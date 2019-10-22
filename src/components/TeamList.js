@@ -8,16 +8,12 @@ const TeamList = props => {
   console.log("team list page update?", props)
   const [students] = React.useState(props.students)
   
-  
-
   const renderStudents = () => {
-    console.log("check on students", students)
     const teamPride = students.filter(student => student.team == +props.number || student.team_number == +props.number)
-    
     
     return teamPride.map((student, index) => {
       if(student.team != student.team_number){
-        axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`,{"name": student, "teamNumber": `${student.team}`}).then(response=>{
+        axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`,{"name": student, "teamNumber": `${+props.number}`}).then(response=>{
         console.log("updated user", response.data)  
         })
       }
@@ -26,10 +22,7 @@ const TeamList = props => {
       )
     })
   }
-
   
-  
-
   return (
     <Droppable droppableId={props.number}>
       {provided => (

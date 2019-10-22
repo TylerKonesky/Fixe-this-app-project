@@ -23,7 +23,6 @@ const App = () => {
 
 
   const renderStudents = () => {
-    console.log("This is a data test",data)
       const noTeam = data.filter(student => student.team_number == 0) 
       return noTeam.map((student, index) => {
         return (
@@ -44,7 +43,6 @@ const App = () => {
     data.map(student => {
       student.team = 0
       return axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`, {"teamNumber": "0"}).then(response =>{
-        console.log("put request sent", response.data)
         newArray.push(response.data)
       })
     }) 
@@ -75,7 +73,6 @@ const App = () => {
     let counter = 1
     data.map(student =>{ 
       axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`,{"name": student, "teamNumber": `${counter.toString()}`}).then(response=>{
-      console.log("random teams", response.data)  
       newArray.push(response.data)
       })
       if(counter == numberOfTeams){
@@ -146,8 +143,6 @@ const App = () => {
                 {/* Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input>
                 <button onClick={handleUpdatedTeams}>Set</button> */}
              
-              
-              
               <button onClick={()=>{resetTeams()}}>Reset</button>
               <button onClick={newTeams}>Random</button>
               { data ? renderStudents() : null}
