@@ -10,8 +10,20 @@ const App = () => {
   const [updatedArr, setUpdatedArr ] = React.useState(null)
   const [data, setData] = React.useState(false)
 
+   useEffect(() => {
+    axios
+      .get("https://serene-sierra-85530.herokuapp.com/get-all-names")
+      .then( res => {
+       setData(res.data)
+       console.log("How many times")
+       
+      })
+
+  },[updatedArr, numberOfTeams])
+
+
   const renderStudents = () => {
-    console.log(data)
+    console.log("This is a data test",data)
       const noTeam = data.filter(student => student.team_number == 0) 
       return noTeam.map((student, index) => {
         return (
@@ -23,7 +35,7 @@ const App = () => {
   const handleSubmit = e => {
     e.preventDefault()
     axios.post(`https://serene-sierra-85530.herokuapp.com/add-team-member`, {"name": student, "teamNumber": "0"}).then(response =>{
-      setData(response.data)
+      setData([...data, response.data])
     }) 
   }
 
@@ -36,19 +48,14 @@ const App = () => {
         newArray.push(response.data)
       })
     }) 
-    setData(newArray)
-    setUpdatedArr(newArray)
+    setTimeout(()=>setData(newArray), 3000)
+    setTimeout(()=>setUpdatedArr(newArray), 3000)
+    setNumberOfTeams(0)
+    setTimeout(()=>setNumberOfTeams(3), 3000)
+    
+    
   }
 
-  useEffect(() => {
-    axios
-      .get("https://serene-sierra-85530.herokuapp.com/get-all-names")
-      .then( res => {
-        setData(res.data)
-      })
-
-  },[updatedArr])
-  
   const shuffleStudents = (arr) =>{
     let currentIndex = arr.length, temporaryValue, randomIndex;
     while( 0 !== currentIndex){
@@ -76,7 +83,10 @@ const App = () => {
       }else{
         counter += 1
       }
-      setData(newArray)
+      setTimeout(()=>setData(newArray), 2000)
+      setNumberOfTeams(0)
+      
+      setTimeout(()=>setNumberOfTeams(3), 3000)
     })
   }
   
@@ -97,20 +107,17 @@ const App = () => {
   }
 
   const createTeams = () => {
-    if(numberOfTeams){
+    if(data){
       let total = new Array(numberOfTeams).fill("1")
       let counter = 0
-    if(data){
       return total.map(()=>{
         counter++
         return(
-          <TeamList students={data} number={`${counter}`} updatedArr={updatedArr} />
-        )
-      })
-    }
+          <TeamList students={data} number={`${counter}`} />
+        )})
     }else{
       return null
-    }
+    }    
   }
 
   return (
@@ -135,9 +142,10 @@ const App = () => {
                 
               </form>
 
-              <form>
-                Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input>
-              </form>
+              
+                {/* Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input>
+                <button onClick={handleUpdatedTeams}>Set</button> */}
+             
               
               
               <button onClick={()=>{resetTeams()}}>Reset</button>

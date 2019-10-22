@@ -3,6 +3,8 @@ import { Draggable } from "react-beautiful-dnd"
 
 const StudentDraggable = props => {
   const { student } = props
+  console.log("test on the students page",student)
+  
   
 
   return (
