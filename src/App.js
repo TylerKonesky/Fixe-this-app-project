@@ -10,8 +10,19 @@ const App = () => {
   const [updatedArr, setUpdatedArr ] = React.useState(null)
   const [data, setData] = React.useState(false)
 
+   useEffect(() => {
+    axios
+      .get("https://serene-sierra-85530.herokuapp.com/get-all-names")
+      .then( res => {
+       setData(res.data)
+       console.log("How many times")
+       
+      })
+
+  },[updatedArr, numberOfTeams])
+
+
   const renderStudents = () => {
-    console.log(data)
       const noTeam = data.filter(student => student.team_number == 0) 
       return noTeam.map((student, index) => {
         return (
@@ -23,7 +34,7 @@ const App = () => {
   const handleSubmit = e => {
     e.preventDefault()
     axios.post(`https://serene-sierra-85530.herokuapp.com/add-team-member`, {"name": student, "teamNumber": "0"}).then(response =>{
-      setData(response.data)
+      setData([...data, response.data])
     }) 
   }
 
@@ -32,23 +43,17 @@ const App = () => {
     data.map(student => {
       student.team = 0
       return axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`, {"teamNumber": "0"}).then(response =>{
-        console.log("put request sent", response.data)
         newArray.push(response.data)
       })
     }) 
-    setData(newArray)
-    setUpdatedArr(newArray)
+    setTimeout(()=>setData(newArray), 3000)
+    setTimeout(()=>setUpdatedArr(newArray), 3000)
+    setNumberOfTeams(0)
+    setTimeout(()=>setNumberOfTeams(3), 3000)
+    
+    
   }
 
-  useEffect(() => {
-    axios
-      .get("https://serene-sierra-85530.herokuapp.com/get-all-names")
-      .then( res => {
-        setData(res.data)
-      })
-
-  },[updatedArr])
-  
   const shuffleStudents = (arr) =>{
     let currentIndex = arr.length, temporaryValue, randomIndex;
     while( 0 !== currentIndex){
@@ -68,7 +73,6 @@ const App = () => {
     let counter = 1
     data.map(student =>{ 
       axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`,{"name": student, "teamNumber": `${counter.toString()}`}).then(response=>{
-      console.log("random teams", response.data)  
       newArray.push(response.data)
       })
       if(counter == numberOfTeams){
@@ -76,7 +80,10 @@ const App = () => {
       }else{
         counter += 1
       }
-      setData(newArray)
+      setTimeout(()=>setData(newArray), 2000)
+      setNumberOfTeams(0)
+      
+      setTimeout(()=>setNumberOfTeams(3), 3000)
     })
   }
   
@@ -97,20 +104,17 @@ const App = () => {
   }
 
   const createTeams = () => {
-    if(numberOfTeams){
+    if(data){
       let total = new Array(numberOfTeams).fill("1")
       let counter = 0
-    if(data){
       return total.map(()=>{
         counter++
         return(
-          <TeamList students={data} number={`${counter}`} updatedArr={updatedArr} />
-        )
-      })
-    }
+          <TeamList students={data} number={`${counter}`} />
+        )})
     }else{
       return null
-    }
+    }    
   }
 
   return (
@@ -135,29 +139,7 @@ const App = () => {
                 
               </form>
 
-              <form className="add-number">
-                Number of Teams: 
-                {/* Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input> */}
-                <select className="drop-menu" onChange={event => setNumberOfTeams(parseInt(event.target.value))}>
-                  <option value="2">
-                    2
-                  </option>
-                  <option value="3">
-                    3
-                  </option>
-                  <option value="4">
-                    4
-                  </option>
-                  <option value="5">
-                    5
-                  </option>
-                  <option value="6">
-                    6
-                  </option>
-                </select>
-              </form>
-              
-              <div className="btn-wrapper">
+
               <button onClick={()=>{resetTeams()}}>Reset</button>
               <button onClick={newTeams}>Random</button>
               </div>
