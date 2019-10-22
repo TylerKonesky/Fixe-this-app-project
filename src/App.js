@@ -124,24 +124,43 @@ const App = () => {
               {...provided.droppableProps}
             >
               {provided.placeholder}
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className="add-student">
                 <input
                   type="text"
                   placeholder="Enter Student Name"
                   value={student}
                   onChange={e => setStudent(e.target.value)}
                 />
-                <button>Add Student</button>
+                <button className="student-btn">Add Student</button>
                 
               </form>
 
-              <form>
-                Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input>
+              <form className="add-number">
+                Number of Teams: 
+                {/* Number of Teams:   <input type="text" onChange={event => setNumberOfTeams(parseInt(event.target.value))}></input> */}
+                <select className="drop-menu" onChange={event => setNumberOfTeams(parseInt(event.target.value))}>
+                  <option value="2">
+                    2
+                  </option>
+                  <option value="3">
+                    3
+                  </option>
+                  <option value="4">
+                    4
+                  </option>
+                  <option value="5">
+                    5
+                  </option>
+                  <option value="6">
+                    6
+                  </option>
+                </select>
               </form>
               
-              
+              <div className="btn-wrapper">
               <button onClick={()=>{resetTeams()}}>Reset</button>
               <button onClick={newTeams}>Random</button>
+              </div>
               { data ? renderStudents() : null}
               <div className="separator-skew" />
             </div>
