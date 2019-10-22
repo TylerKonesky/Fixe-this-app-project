@@ -1,3 +1,6 @@
+// Create a function that gets past to the team builder
+// that allows us to set state with the response data
+
 import React, { useEffect } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import StudentDraggable from "./components/StudentDraggable";
