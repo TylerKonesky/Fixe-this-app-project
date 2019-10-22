@@ -3,10 +3,12 @@ import { Draggable } from "react-beautiful-dnd"
 
 const StudentDraggable = props => {
   const { student } = props
+  
 
   return (
     <Draggable draggableId={student.id} index={props.index}>
       {provided => (
+        
         <div
           className="student-draggable"
           {...provided.draggableProps}

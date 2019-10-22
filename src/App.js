@@ -1,41 +1,53 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { DragDropContext, Droppable } from "react-beautiful-dnd"
-
 import StudentDraggable from "./components/StudentDraggable"
-
-import mockData from "./mockData"
 import TeamList from "./components/TeamList"
+import axios from "axios"
 
 const App = () => {
   const [student, setStudent] = React.useState("")
-  const [students, setStudents] = React.useState(mockData)
   const [numberOfTeams, setNumberOfTeams] = React.useState("" || 3)
+  const [updatedArr, setUpdatedArr ] = React.useState(null)
+  const [data, setData] = React.useState(false)
 
   const renderStudents = () => {
-    console.log(students)
-    const noTeam = students.filter(student => student.team === 0) 
-    return noTeam.map((student, index) => {
-      return (
-        <StudentDraggable key={student.id} student={student} index={index} />
+    console.log(data)
+      const noTeam = data.filter(student => student.team_number == 0) 
+      return noTeam.map((student, index) => {
+        return (
+          <StudentDraggable key={student.id} student={student} index={index} />
       )
-    }) 
+    })     
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-    setStudents([
-      ...students,
-      { id: students.length + 1, name: student, team: 0 }
-    ])
+    axios.post(`https://serene-sierra-85530.herokuapp.com/add-team-member`, {"name": student, "teamNumber": "0"}).then(response =>{
+      setData(response.data)
+    }) 
   }
 
   const resetTeams = () => {
-    return students.map(student => {
-      console.log(student.team)
+    const newArray = []
+    data.map(student => {
       student.team = 0
-      setStudents([...students])
-    })
+      return axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`, {"teamNumber": "0"}).then(response =>{
+        console.log("put request sent", response.data)
+        newArray.push(response.data)
+      })
+    }) 
+    setData(newArray)
+    setUpdatedArr(newArray)
   }
+
+  useEffect(() => {
+    axios
+      .get("https://serene-sierra-85530.herokuapp.com/get-all-names")
+      .then( res => {
+        setData(res.data)
+      })
+
+  },[updatedArr])
   
   const shuffleStudents = (arr) =>{
     let currentIndex = arr.length, temporaryValue, randomIndex;
@@ -51,24 +63,25 @@ const App = () => {
   }
 
   const randomTeams = () =>{
-    console.log(students)
-    shuffleStudents(students);
-    let studentsPerTeam = Math.ceil
+    shuffleStudents(data);
+    const newArray = []
     let counter = 1
-    return students.map(student =>{ 
-      student.team = counter
+    data.map(student =>{ 
+      axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`,{"name": student, "teamNumber": `${counter.toString()}`}).then(response=>{
+      console.log("random teams", response.data)  
+      newArray.push(response.data)
+      })
       if(counter == numberOfTeams){
         counter = 1
       }else{
         counter += 1
       }
-      }
-    )
+      setData(newArray)
+    })
   }
   
   const newTeams = () =>{
     randomTeams();
-    setStudents([...students])
   }
   
  
@@ -77,7 +90,7 @@ const App = () => {
       return
     }
 
-    const droppedStudent = students.find(
+    const droppedStudent = data.find(
       student => student.id === result.draggableId
     )
     droppedStudent.team = +result.destination.droppableId
@@ -86,28 +99,18 @@ const App = () => {
   const createTeams = () => {
     if(numberOfTeams){
       let total = new Array(numberOfTeams).fill("1")
-    let counter = 0
-    
-    return total.map(()=>{
-      counter++
-      return(
-        <TeamList students={students} number={`${counter}`} />
-      )
-    })
-
-    }else{
-      return
+      let counter = 0
+    if(data){
+      return total.map(()=>{
+        counter++
+        return(
+          <TeamList students={data} number={`${counter}`} updatedArr={updatedArr} />
+        )
+      })
     }
-    
-    
-  }
-
-  const handleNumberOfTeams = (event)=>{
-    console.log(numberOfTeams)
-    event.preventDefault()
-    setNumberOfTeams(
-      parseInt(event.target.value)
-    )
+    }else{
+      return null
+    }
   }
 
   return (
@@ -138,20 +141,22 @@ const App = () => {
               
               
               <button onClick={()=>{resetTeams()}}>Reset</button>
-              <button onClick={()=>{newTeams()}}>Random</button>
-              {renderStudents()}
+              <button onClick={newTeams}>Random</button>
+              { data ? renderStudents() : null}
               <div className="separator-skew" />
             </div>
           )}
+
+            
         </Droppable>
         
-
         <div className="teams-wrapper">
-          {createTeams()}
+          {createTeams()}          
         </div>
+        
       </div>
+      
     </DragDropContext>
-    
   )
 }
 
