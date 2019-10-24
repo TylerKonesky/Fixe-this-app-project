@@ -1,7 +1,7 @@
 body {
   margin: 0;
   border-top: 30px solid #00cb78;
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
 
 .app {
@@ -18,7 +18,7 @@ body {
       padding: 10px;
       font-size: 18px;
       border-color: lightgrey;
-      background-color:#007BC9;
+      background-color: #007bc9;
       color: white;
       border-radius: 3px;
       // text-shadow:
@@ -60,9 +60,9 @@ body {
       button {
         transition: 0.5s ease-in-out;
         &:hover {
-        font-weight: bold;
-        border-color: blue;
-        cursor: pointer;
+          font-weight: bold;
+          border-color: blue;
+          cursor: pointer;
         }
       }
     }
@@ -83,7 +83,7 @@ body {
 
     .team-list {
       border: 1px solid lightgrey;
-      background-color:white;
+      background-color: white;
       height: minmax(250px);
       display: flex;
       flex-direction: column;
@@ -107,7 +107,7 @@ body {
   .student-draggable {
     border: 1px solid black;
     margin: 10px;
-    background-color: #E9F3EF;
+    background-color: #e9f3ef;
     border-radius: 5px;
     border-color: lightgrey;
     box-shadow: f;
@@ -118,6 +118,14 @@ body {
       font-family: sans-serif;
       font-weight: bold;
     }
-    
+
+    .del-student {
+      padding: 10px;
+      font-size: 18px;
+      border-color: lightgrey;
+      background-color: #007bc9;
+      color: white;
+      border-radius: 3px;
+    }
   }
 }

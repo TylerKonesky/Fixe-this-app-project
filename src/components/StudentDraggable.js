@@ -4,7 +4,7 @@ import axios from "axios";
 
 const StudentDraggable = props => {
   const { student } = props;
-  
+
   const handleDelete = event => {
     event.preventDefault();
     axios
@@ -13,17 +13,17 @@ const StudentDraggable = props => {
       )
       .then(response => {
         console.log("Successfully deleted: " + response.data.name);
-        teamListHandleUpdate(response.data)
+        alert("SUCCESSFUL DELETE");
+        // teamListHandleUpdate(response.data)
       })
       .catch(error => {
         console.log("Error on delete: " + error);
       });
-
   };
 
-  const teamListHandleUpdate = (arr) => {
-    props.teamListHandleUpdate(arr)
-  }
+  // const teamListHandleUpdate = (arr) => {
+  //   props.teamListHandleUpdate(arr)
+  // }
 
   return (
     <Draggable draggableId={student.id} index={props.index}>
@@ -35,7 +35,9 @@ const StudentDraggable = props => {
           ref={provided.innerRef}
         >
           <p className="student-name">{student.name}</p>
-          <button onClick={e => handleDelete(e)}>Delete</button>
+          <button className="del-student" onClick={e => handleDelete(e)}>
+            Delete
+          </button>
         </div>
       )}
     </Draggable>
