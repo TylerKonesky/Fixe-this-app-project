@@ -11,6 +11,7 @@ const App = () => {
   const [numberOfTeams, setNumberOfTeams] = React.useState("" || 3);
   const [updatedArr, setUpdatedArr] = React.useState(null);
   const [data, setData] = React.useState(false);
+  const [nightMode, setNightMode] = React.useState(null);
 
   useEffect(() => {
     axios
@@ -18,7 +19,7 @@ const App = () => {
       .then(res => {
         setData(res.data);
       });
-  }, [updatedArr, numberOfTeams]);
+  }, [updatedArr, numberOfTeams, nightMode]);
 
   // Initial render of students, should update upon data changing
 
@@ -32,6 +33,7 @@ const App = () => {
           setData={setData}
           student={student}
           index={index}
+          nightMode={nightMode}
         />
       );
     });
@@ -130,7 +132,6 @@ const App = () => {
       student => student.id === result.draggableId
     );
     droppedStudent.team = +result.destination.droppableId;
-    setTimeout(() => window.location.reload(), 1000);
   };
 
   // Creates the displayed "Teams" on page.
@@ -146,6 +147,7 @@ const App = () => {
             updateData={teamListHandleUpdate}
             students={data}
             number={`${counter}`}
+            nightMode={nightMode}
           />
         );
       });
@@ -167,25 +169,40 @@ const App = () => {
     setData(updatedArr);
   };
 
+  const handleNightMode = event => {
+    setNightMode(!nightMode);
+    console.log("Night mode switched");
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="app">
+      <div className={nightMode ? "night-app" : "app"}>
         <Droppable droppableId={"0"}>
           {provided => (
             <div
-              className="left-student-list"
+              className={
+                nightMode ? "night-left-student-list" : "left-student-list"
+              }
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               {provided.placeholder}
-              <form onSubmit={handleSubmit} className="add-student">
+              <button onClick={e => handleNightMode(e)}>Night Mode</button>
+              <form
+                onSubmit={handleSubmit}
+                className={nightMode ? "night-add-student" : "add-student"}
+              >
                 <input
                   type="text"
                   placeholder="Enter Student Name"
                   value={student}
                   onChange={e => setStudent(e.target.value)}
                 />
-                <button className="student-btn">Add Student</button>
+                <button
+                  className={nightMode ? "night-student-btn" : "student-btn"}
+                >
+                  Add Student
+                </button>
               </form>
 
               <button
@@ -197,12 +214,18 @@ const App = () => {
               </button>
               <button onClick={newTeams}>Random</button>
               {data ? renderStudents() : null}
-              <div className="separator-skew" />
+              <div
+                className={
+                  nightMode ? "night-separator-skew" : "separator-skew"
+                }
+              />
             </div>
           )}
         </Droppable>
 
-        <div className="teams-wrapper">{createTeams()}</div>
+        <div className={nightMode ? "night-teams-wrapper" : "teams-wrapper"}>
+          {createTeams()}
+        </div>
       </div>
     </DragDropContext>
   );
