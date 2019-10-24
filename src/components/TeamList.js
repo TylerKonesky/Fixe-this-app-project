@@ -5,24 +5,28 @@ import StudentDraggable from "./StudentDraggable"
 import axios from "axios"
 
 const TeamList = props => {
-  console.log("team list page update?", props)
-  const [students] = React.useState(props.students)
+  const [students, setStudents] = React.useState(props.students)
   
   const renderStudents = () => {
     const teamPride = students.filter(student => student.team == +props.number || student.team_number == +props.number)
     
     return teamPride.map((student, index) => {
       if(student.team != student.team_number){
+        student.team_number = +props.number
         axios.put(`https://serene-sierra-85530.herokuapp.com/change-team-num/${student.name}`,{"name": student, "teamNumber": `${+props.number}`}).then(response=>{
-        console.log("updated user", response.data)  
+          console.log("please don't break!")
+          
         })
       }
       return (
-        <StudentDraggable key={student.id} student={student} index={index} />
+        <StudentDraggable key={student.id} teamListHandleUpdate={props.updateData} student={student} index={index} />
       )
     })
+    
   }
+
   
+
   return (
     <Droppable droppableId={props.number}>
       {provided => (

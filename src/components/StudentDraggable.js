@@ -4,8 +4,7 @@ import axios from "axios";
 
 const StudentDraggable = props => {
   const { student } = props;
-  console.log("test on the students page", student);
-
+  
   const handleDelete = event => {
     event.preventDefault();
     axios
@@ -14,11 +13,17 @@ const StudentDraggable = props => {
       )
       .then(response => {
         console.log("Successfully deleted: " + response.data.name);
+        teamListHandleUpdate(response.data)
       })
       .catch(error => {
         console.log("Error on delete: " + error);
       });
+
   };
+
+  const teamListHandleUpdate = (arr) => {
+    props.teamListHandleUpdate(arr)
+  }
 
   return (
     <Draggable draggableId={student.id} index={props.index}>

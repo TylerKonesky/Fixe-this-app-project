@@ -1,6 +1,3 @@
-// Create a function that gets past to the team builder
-// that allows us to set state with the response data
-
 import React, { useEffect } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import StudentDraggable from "./components/StudentDraggable";
@@ -18,19 +15,24 @@ const App = () => {
       .get("https://serene-sierra-85530.herokuapp.com/get-all-names")
       .then(res => {
         setData(res.data);
-        console.log("How many times");
       });
+    
   }, [updatedArr, numberOfTeams]);
+
+
+// Initial render of students, should update upon data changing
 
   const renderStudents = () => {
     const noTeam = data.filter(student => student.team_number == 0);
     return noTeam.map((student, index) => {
       return (
-        <StudentDraggable key={student.id} student={student} index={index} />
+        <StudentDraggable key={student.id} teamListHandleUpdate={teamListHandleUpdate} setData={setData} student={student} index={index} />
       );
     });
   };
 
+
+  // Handles the creation of new students
   const handleSubmit = e => {
     e.preventDefault();
     axios
@@ -42,6 +44,8 @@ const App = () => {
         setData([...data, response.data]);
       });
   };
+
+  // sets all students teams to 0 and updates the DB
 
   const resetTeams = () => {
     const newArray = [];
@@ -61,6 +65,8 @@ const App = () => {
     setNumberOfTeams(0);
     setTimeout(() => setNumberOfTeams(3), 3000);
   };
+
+  // SHUFFLES STUDENTS, UPDATES DB, and RERENDERS NEW TEAMS
 
   const shuffleStudents = arr => {
     let currentIndex = arr.length,
@@ -106,6 +112,8 @@ const App = () => {
     randomTeams();
   };
 
+  // Handles manual changing of student teams.
+
   const onDragEnd = result => {
     if (!result.destination) {
       return;
@@ -115,7 +123,10 @@ const App = () => {
       student => student.id === result.draggableId
     );
     droppedStudent.team = +result.destination.droppableId;
+    setTimeout(() => window.location.reload(), 1000)
   };
+
+  // Creates the displayed "Teams" on page. 
 
   const createTeams = () => {
     if (data) {
@@ -123,12 +134,23 @@ const App = () => {
       let counter = 0;
       return total.map(() => {
         counter++;
-        return <TeamList students={data} number={`${counter}`} />;
+        return <TeamList updateData={teamListHandleUpdate} students={data} number={`${counter}`} />;
       });
     } else {
       return null;
     }
   };
+
+  // Functions to handle updates from other pages
+
+  const teamListHandleUpdate = (arr) =>{
+     setData(data.filter(student => {
+      return student.name !== arr.name
+    }))
+
+    setUpdatedArr(data)
+    setData(updatedArr)
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
