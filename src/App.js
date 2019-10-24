@@ -16,21 +16,24 @@ const App = () => {
       .then(res => {
         setData(res.data);
       });
-    
   }, [updatedArr, numberOfTeams]);
 
-
-// Initial render of students, should update upon data changing
+  // Initial render of students, should update upon data changing
 
   const renderStudents = () => {
     const noTeam = data.filter(student => student.team_number == 0);
     return noTeam.map((student, index) => {
       return (
-        <StudentDraggable key={student.id} teamListHandleUpdate={teamListHandleUpdate} setData={setData} student={student} index={index} />
+        <StudentDraggable
+          key={student.id}
+          teamListHandleUpdate={teamListHandleUpdate}
+          setData={setData}
+          student={student}
+          index={index}
+        />
       );
     });
   };
-
 
   // Handles the creation of new students
   const handleSubmit = e => {
@@ -94,6 +97,7 @@ const App = () => {
           { name: student, teamNumber: `${counter.toString()}` }
         )
         .then(response => {
+          console.log(response.data);
           newArray.push(response.data);
         });
       if (counter == numberOfTeams) {
@@ -101,10 +105,11 @@ const App = () => {
       } else {
         counter += 1;
       }
-      setTimeout(() => setData(newArray), 2000);
+      console.log("NEW ARRAY", newArray);
+      setData(...newArray);
       setNumberOfTeams(0);
 
-      setTimeout(() => setNumberOfTeams(3), 3000);
+      setTimeout(() => setNumberOfTeams(3), 5000);
     });
   };
 
@@ -123,10 +128,10 @@ const App = () => {
       student => student.id === result.draggableId
     );
     droppedStudent.team = +result.destination.droppableId;
-    setTimeout(() => window.location.reload(), 1000)
+    setTimeout(() => window.location.reload(), 1000);
   };
 
-  // Creates the displayed "Teams" on page. 
+  // Creates the displayed "Teams" on page.
 
   const createTeams = () => {
     if (data) {
@@ -134,7 +139,13 @@ const App = () => {
       let counter = 0;
       return total.map(() => {
         counter++;
-        return <TeamList updateData={teamListHandleUpdate} students={data} number={`${counter}`} />;
+        return (
+          <TeamList
+            updateData={teamListHandleUpdate}
+            students={data}
+            number={`${counter}`}
+          />
+        );
       });
     } else {
       return null;
@@ -143,14 +154,16 @@ const App = () => {
 
   // Functions to handle updates from other pages
 
-  const teamListHandleUpdate = (arr) =>{
-     setData(data.filter(student => {
-      return student.name !== arr.name
-    }))
+  const teamListHandleUpdate = arr => {
+    setData(
+      data.filter(student => {
+        return student.name !== arr.name;
+      })
+    );
 
-    setUpdatedArr(data)
-    setData(updatedArr)
-  }
+    setUpdatedArr(data);
+    setData(updatedArr);
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
