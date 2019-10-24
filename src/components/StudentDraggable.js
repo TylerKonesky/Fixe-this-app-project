@@ -15,11 +15,16 @@ const StudentDraggable = props => {
       .then(response => {
         console.log("Successfully deleted: " + response.data.name);
         teamListHandleUpdate(response.data);
+
+        alert("SUCCESSFUL DELETE");
+        // teamListHandleUpdate(response.data)
+
       })
       .catch(error => {
         console.log("Error on delete: " + error);
       });
   };
+
 
   const teamListHandleUpdate = arr => {
     props.teamListHandleUpdate(arr);
@@ -36,6 +41,7 @@ const StudentDraggable = props => {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
+
           <p
             className={props.nightMode ? "night-student-name" : "student-name"}
           >
@@ -45,6 +51,7 @@ const StudentDraggable = props => {
             className={props.nightMode ? "night-del-student" : "del-student"}
             onClick={e => handleDelete(e)}
           >
+
             Delete
           </button>
         </div>

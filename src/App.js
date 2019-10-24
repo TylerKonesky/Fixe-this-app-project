@@ -29,7 +29,7 @@ const App = () => {
       return (
         <StudentDraggable
           key={student.id}
-          teamListHandleUpdate={teamListHandleUpdate}
+          // teamListHandleUpdate={teamListHandleUpdate}
           setData={setData}
           student={student}
           index={index}
@@ -144,7 +144,7 @@ const App = () => {
         counter++;
         return (
           <TeamList
-            updateData={teamListHandleUpdate}
+            // updateData={teamListHandleUpdate}
             students={data}
             number={`${counter}`}
             nightMode={nightMode}
@@ -158,16 +158,16 @@ const App = () => {
 
   // Functions to handle updates from other pages
 
-  const teamListHandleUpdate = arr => {
-    setData(
-      data.filter(student => {
-        return student.name !== arr.name;
-      })
-    );
+  // const teamListHandleUpdate = arr => {
+  //   setData(
+  //     data.filter(student => {
+  //       return student.name !== arr.name;
+  //     })
+  //   );
 
-    setUpdatedArr(data);
-    setData(updatedArr);
-  };
+  //   setUpdatedArr(data);
+  //   setData(updatedArr);
+  // };
 
   const handleNightMode = event => {
     setNightMode(!nightMode);
