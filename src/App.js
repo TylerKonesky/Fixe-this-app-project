@@ -4,6 +4,8 @@ import StudentDraggable from "./components/StudentDraggable";
 import TeamList from "./components/TeamList";
 import axios from "axios";
 
+//HOSTED AT https://team-builder-1234.herokuapp.com/
+
 const App = () => {
   const [student, setStudent] = React.useState("");
   const [numberOfTeams, setNumberOfTeams] = React.useState("" || 3);
