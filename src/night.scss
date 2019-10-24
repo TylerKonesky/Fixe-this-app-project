@@ -1,16 +1,9 @@
-@import "./night.scss";
-
-body {
-  margin: 0;
-  border-top: 30px solid #00cb78;
-  background-color: #f9f9f9;
-}
-
-.app {
+.night-app {
   display: grid;
   grid-template-columns: 1fr 4fr;
+  background: rgb(78, 78, 78);
 
-  .left-student-list {
+  .night-left-student-list {
     height: 100%;
     padding: 30px;
     display: flex;
@@ -20,7 +13,7 @@ body {
       padding: 10px;
       font-size: 18px;
       border-color: lightgrey;
-      background-color: #007bc9;
+      background-color: #14374d;
       color: white;
       border-radius: 3px;
       // text-shadow:
@@ -33,10 +26,10 @@ body {
         cursor: pointer;
       }
     }
-    .add-student {
+    .night-add-student {
       padding: 10px;
       display: flex;
-      .student-btn {
+      .night-student-btn {
         font-size: 15px;
       }
       input {
@@ -44,17 +37,17 @@ body {
         font-size: 10px;
       }
     }
-    .add-number {
+    .night-add-number {
       font-family: sans-serif;
       padding: 10px;
       display: flex;
       justify-content: space-between;
-      .drop-menu {
+      .night-drop-menu {
         padding: 8px;
         width: 100px;
       }
     }
-    .btn-wrapper {
+    .night-btn-wrapper {
       padding: 10px;
       display: grid;
       grid-template-columns: 1fr;
@@ -63,7 +56,7 @@ body {
         transition: 0.5s ease-in-out;
         &:hover {
           font-weight: bold;
-          border-color: blue;
+          border-color: #14374d;
           cursor: pointer;
         }
       }
@@ -76,22 +69,22 @@ body {
   //   transform: skew(10deg);
   // }
 
-  .teams-wrapper {
+  .night-teams-wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 60px;
     padding: 50px;
     justify-content: space-around;
 
-    .team-list {
+    .night-team-list {
       border: 1px solid lightgrey;
-      background-color: white;
+      background-color: rgb(143, 143, 143);
       height: minmax(250px);
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
 
-      .team-title {
+      .night-team-title {
         font-family: sans-serif;
         height: 20px;
         width: 100%;
@@ -100,20 +93,20 @@ body {
         text-align: center;
         color: white;
         font-size: 20px;
-        background-color: #00cb78;
+        background-color: #016921;
         // transform: skewY(10deg);
       }
     }
   }
 
-  .student-draggable {
+  .night-student-draggable {
     border: 1px solid black;
     margin: 10px;
     background-color: #e9f3ef;
     border-radius: 5px;
     border-color: lightgrey;
     box-shadow: f;
-    .student-name {
+    .night-student-name {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -121,11 +114,11 @@ body {
       font-weight: bold;
     }
 
-    .del-student {
+    .night-del-student {
       padding: 10px;
       font-size: 18px;
       border-color: lightgrey;
-      background-color: #007bc9;
+      background-color: #14374d;
       color: white;
       border-radius: 3px;
     }

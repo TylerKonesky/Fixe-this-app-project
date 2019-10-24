@@ -30,6 +30,7 @@ const TeamList = props => {
           teamListHandleUpdate={props.updateData}
           student={student}
           index={index}
+          nightMode={props.nightMode}
         />
       );
     });
@@ -39,12 +40,20 @@ const TeamList = props => {
     <Droppable droppableId={props.number}>
       {provided => (
         <div
-          className="team-list"
+          className={props.nightMode ? "night-team-list" : "team-list"}
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
-          <div className="team-title">Team {props.number}</div>
-          <div className="team-students">{renderStudents()}</div>
+          <div className={props.nightMode ? "night-team-title" : "team-title"}>
+            Team {props.number}
+          </div>
+          <div
+            className={
+              props.nightMode ? "night-team-students" : "team-students"
+            }
+          >
+            {renderStudents()}
+          </div>
           {provided.placeholder}
         </div>
       )}
